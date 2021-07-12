@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+    <!--***********-->
+    <!-- GREETINGS -->
+    <!--***********-->
+
+    <!--WITH USER-->
+    <category>
+        <pattern>Hello I am *</pattern>
+        <template>
+            <random>
+                <li>How are you doing <person><star/></person>? Well I hope! My name is <bot name="name" /></li>
+                <li>Hi <person><star/></person>! My name is <bot name="name" /> </li>
+            </random>
+        </template>
+    </category>
+    <!--W/O USER-->
+    <category>
+        <pattern>Hello</pattern>
+        <template>
+            <random>
+                <li>How are you doing? Well I hope! My name is <bot name="name" /></li>
+                <li>Hi! My name is <bot name="name" /> </li>
+            </random>
+        </template>
+    </category>
+    <category>
+        <pattern>Hi</pattern>
+        <template>
+            <random>
+                <li>How are you doing? Well I hope! My name is <bot name="name" /></li>
+                <li>Hi! My name is <bot name="name" /> </li>
+            </random>
+        </template>
+    </category>
+
+    <!--*******************************-->
+    <!-- SETTING TOPICS FOR DISCUSSION -->
+    <!--*******************************-->
+    <!-- This will actually set the topic for further conversations -->
+    <category>
+        <pattern>Hey let us talk about *</pattern>
+        <template>
+                <think><set name="topicrequest"><star/></set></think>
+                <condition name="topicrequest">
+                    <li value="weather">Sure let's talk about <star/>! <think><set name="topic">weather</set></think> </li>
+                    <li value="Weather">Sure let's talk about <star/>! <think><set name="topic">weather</set></think> </li>
+                    <li value="the weather">Sure let's talk about <star/>! <think><set name="topic">weather</set></think> </li>
+                    <li value="the Weather">Sure let's talk about <star/>! <think><set name="topic">weather</set></think> </li>
+                    <li value="coffee">Sure let's talk about <star/>! <think><set name="topic">coffee</set></think> </li>
+                    <li value="Coffee">Sure let's talk about <star/>! <think><set name="topic">coffee</set></think> </li>
+                    <!-- ROGERIAN RESPONSE -->
+                    <li>
+                        <image>http://1.bp.blogspot.com/-S4fOyfLhQOI/ViU_pi8eg9I/AAAAAAAAAI8/3OTIm8ozyp8/s1600/rogers.jpg</image>
+                        <button><text> So what do you love about <star/>? How does it make you feel?  </text><url>https://www.youtube.com/watch?v=dQw4w9WgXcQ</url></button>
+                    </li>
+                </condition>
+        </template>
+    </category>
+
+    <!--*************************************************************************************************-->
+    <!-- Exchange 3 is a general no/yes response to the follow-up that is specific as part of Exchange2. -->
+    <!--*************************************************************************************************-->
+    <!-- Exchange 3: No : follow up response was not helpful -->
+    <category>
+        <pattern>No</pattern>
+        <template>
+            <think><set name="prevprevinput"><request index="-2" /></set></think>
+            <condition name="prevprevinput">
+                <li value="That was not helpful">
+                    I'm sorry I don't think I can help you with this.
+                </li>
+                <!-- ROGERIAN RESPONSE -->
+                <li>
+                    <image>http://1.bp.blogspot.com/-S4fOyfLhQOI/ViU_pi8eg9I/AAAAAAAAAI8/3OTIm8ozyp8/s1600/rogers.jpg</image>
+                    Have you stopped to think about why that is not helpful? Let us try to be a bit more intraspective here.
+                </li>
+            </condition>
+        </template>
+    </category>
+    <!-- Exchange 3: Yes : follow up response was helpful -->
+    <category>
+        <pattern>Yes</pattern>
+        <template>
+            <think><set name="prevprevinput"><request index="-2" /></set></think>
+            <condition name="prevprevinput">
+                <li value="That was not helpful">
+                   Great! Glad I could be of help!
+                </li>
+                <!-- ROGERIAN RESPONSE -->
+                <li>
+                    <image>http://1.bp.blogspot.com/-S4fOyfLhQOI/ViU_pi8eg9I/AAAAAAAAAI8/3OTIm8ozyp8/s1600/rogers.jpg</image>
+                    Have you stopped to think about why you would answer this without proper context? Let us try to be a bit more intraspective here.
+                </li>
+            </condition>
+        </template>
+    </category>
+
+    <!--*****************-->
+    <!-- Topic1: Weather -->
+    <!--*****************-->
+    <topic name="weather">
+        <!-- *********** -->
+        <!-- 5 Questions -->
+        <!-- *********** -->
+        <!-- Q1 -->
+        <category>
+            <pattern>What do you like about * weather</pattern>
+            <template>
+            <think><set name="state"><star/></set></think>
+                <condition name="state">
+                    <li value="rainy">I hate rainy weather! I can't wait until there is more sunshine!</li>
+                    <li value="sunny">I love sunny weather! I can't wait for the springtime in Seattle!</li>
+                    <!-- ROGERIAN RESPONSE -->
+                    <li>
+                        <image>http://1.bp.blogspot.com/-S4fOyfLhQOI/ViU_pi8eg9I/AAAAAAAAAI8/3OTIm8ozyp8/s1600/rogers.jpg</image>
+                        <button><text> So what do you love about <star/> weather? How does it make you feel?  </text><url>https://www.youtube.com/watch?v=dQw4w9WgXcQ</url></button>
+                    </li>
+                </condition>
+            </template>
+        </category>
+        <!-- Q2 -->
+        <category>
+            <pattern>Why does it always rain here</pattern>
+            <template>
+                Sadly that is the nature of the PNW - rains a lot but it also is naturally a very scenic place.
+            </template>
+        </category>
+        <!-- Q3 -->
+        <category>
+            <pattern>How long do you think the sunny weather will last</pattern>
+            <template>
+                If I was a betting bot... which I am too simplistic to be ... I would say 5ish months or so.
+            </template>
+        </category>
+        <!-- Q4 -->
+        <category>
+            <pattern>What is the average rainfall in Seattle</pattern>
+            <template>
+                I'm not sure, but I found this blog that may be helpful
+                <button><text>Seattle Weather Blog</text><url>https://www.seattleweatherblog.com/rain-stats/</url></button>.
+            </template>
+        </category>
+        <!-- Q5 -->
+        <category>
+            <pattern>What do you think the weather will be like in Seattle *</pattern>
+            <template>
+                I'm not sure, but I found this blog that may be helpful
+                <button><text>Seattle 10-day Weather Report</text><url>https://weather.com/weather/tenday/l/ced0de18c1d771856e6012f3abf0a952cfe22952e72e516e6e098d54ca737114/</url></button>.
+                <button><text>Rick rolling into the weather report</text><url>https://www.youtube.com/watch?v=dQw4w9WgXcQ</url></button>
+            </template>
+        </category>
+
+        <!-- Exchange 2 -->
+        <category>
+            <pattern>That was not helpful</pattern>
+            <template>
+                <think><set name="previnput"><request index="-1" /></set></think>
+                <condition name="previnput">
+                    <li value="What is the average rainfall in Seattle">
+                        I'm sorry you didn't like that answer. Would a google search be more helpful?
+                        <button><text>Google</text><url>https://www.google.com/search?q=seattle+rainfall</url></button>
+                    </li>
+                    <li value="Why does it always rain here">
+                        I'm sorry you didn't like that answer. Would a google search be more helpful?
+                        <button><text>Google</text><url>https://www.google.com/search?q=why+does+it+rain+so+much+in+seattle</url></button>
+                    </li>
+                    <li value="How long do you think the sunny weather will last">
+                        I'm sorry you didn't like that answer. Would a google search be more helpful?
+                        <button><text>Google</text><url>https://www.google.com/search?q=how+many+months+of+rain+does+seattle+have</url></button>
+                    </li>
+                    <!-- ROGERIAN RESPONSE -->
+                    <li>
+                        <image>http://1.bp.blogspot.com/-S4fOyfLhQOI/ViU_pi8eg9I/AAAAAAAAAI8/3OTIm8ozyp8/s1600/rogers.jpg</image>
+                        Have you stopped to think about why that is not helpful? Let us try to be a bit more intraspective here.
+                    </li>
+                </condition>
+            </template>
+        </category>
+    </topic>
+
+
+    <!--*****************-->
+    <!-- Topic2: Coffee -->
+    <!--*****************-->
+    <topic name="coffee">
+        <!-- *********** -->
+        <!-- 5 Questions -->
+        <!-- *********** -->
+        <!-- Q1 -->
+        <category>
+            <pattern>How does the majority of Americans like their coffee</pattern>
+            <template>
+                I am not sure.
+            </template>
+        </category>
+        <!-- Q2 -->
+        <category>
+            <pattern>What is the best country to get coffee from</pattern>
+            <template>
+                I like Columbian coffee, but I have heard there is a special coffee bean that is harvested from the defecation of the Civet called Kopi Luwak.
+            </template>
+        </category>
+        <!-- Q3: -->
+        <category>
+            <pattern>What is the most popular type of roast in Seattle</pattern>
+            <template>
+                I like darker roasts, but what do I know I am just a bot.
+            </template>
+        </category>
+        <!-- Q4: -->
+        <category>
+            <pattern>How much coffee can I drink in a day</pattern>
+            <template>
+                I'm not sure, but I found this blog that may be helpful
+                <button><text>Blog Post</text><url>https://www.usatoday.com/story/news/2019/08/24/health-benefits-coffee-how-much-drink-and-there-risks/1639899001/</url></button>.
+            </template>
+        </category>
+        <!-- Q5: -->
+        <category>
+            <pattern>What do you think the best weather to drink coffee is</pattern>
+            <template>
+                Definitely rainy weather!
+            </template>
+        </category>
+
+        <!-- Exchange 2 : Specific to this topic -->
+        <category>
+            <pattern>That was not helpful</pattern>
+            <template>
+                <think><set name="previnput"><request index="-1" /></set></think>
+                <condition name="previnput">
+                    <li value="What is the best country to get coffee from">
+                        I'm sorry you didn't like that answer. Would a google search be more helpful?
+                        <button><text>Google</text><url>https://www.google.com/search?q=what+is+the+best+country+to+get+coffee+from</url></button>
+                    </li>
+                    <li value="What is the most popular type of roast in Seattle">
+                        I'm sorry you didn't like that answer. Would a google search be more helpful?
+                        <button><text>Google</text><url>https://www.google.com/search?q=what+is+the+most+popular+type+of+roast+in+Seattle</url></button>
+                    </li>
+                    <li value="How does the majority of Americans like their coffee">
+                        I'm sorry you didn't like that answer. Would a google search be more helpful?
+                        <button><text>Google</text><url>https://www.google.com/search?q=how+does+the+majority+of+americans+like+their+coffee</url></button>
+                    </li>
+                    <!-- ROGERIAN RESPONSE -->
+                    <li>
+                        <image>http://1.bp.blogspot.com/-S4fOyfLhQOI/ViU_pi8eg9I/AAAAAAAAAI8/3OTIm8ozyp8/s1600/rogers.jpg</image>
+                        Have you stopped to think about why that is not helpful? Let us try to be a bit more intraspective here.
+                    </li>
+                </condition>
+            </template>
+        </category>
+    </topic>
+</aiml>
